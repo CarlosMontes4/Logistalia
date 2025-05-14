@@ -1,57 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Logistalia</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logistalia</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Aseguramos que las imágenes ocupen todo el espacio del carrusel */
+    #carousel {
+      position: relative;
+      width: 100%;
+      height: 80vh; /* Ajuste para que el carrusel ocupe un 80% de la altura de la ventana */
+    }
+    .carousel-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 1s ease-in-out;
+    }
+  </style>
 </head>
-<body>
-    <header class="bg-white shadow-md">
-        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <!-- Logotipo -->
-                <div class="flex-shrink-0">
-                <a href="#">
-                    <img class="h-10 w-auto" src="src/logo-nombre.png" alt="Logistalia">
-                </a>
-                </div>
+<body class="relative">
 
-                <!-- Navegación -->
-                <div class="hidden md:flex space-x-6">
-                <a href="#saber-mas" class="text-gray-700 hover:text-blue-600 font-medium transition">Saber más</a>
-                <a href="#contacto" class="text-gray-700 hover:text-blue-600 font-medium transition">Contactar</a>
-                </div>
+<header class="bg-white shadow-md">
+  <div class="mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+      
+      <!-- Izquierda: Logotipo + Navegación -->
+      <div class="flex items-center space-x-6">
+        <!-- Logotipo -->
+        <div class="flex-shrink-0">
+          <a href="#">
+            <img class="h-10 w-auto" src="src/landing/logo-nombre.png" alt="Logotipo">
+          </a>
+        </div>
 
-                <!-- Botón Iniciar sesión -->
-                <div class="hidden md:flex">
-                <a href="#login" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-semibold transition">
-                    Iniciar sesión
-                </a>
-                </div>
+        <!-- Navegación (desktop) -->
+        <div class="hidden md:flex space-x-6 pl-8">
+          <a href="#saber-mas" class="text-gray-700 hover:text-blue-600 font-medium transition">Saber más</a>
+          <a href="#contacto" class="text-gray-700 hover:text-blue-600 font-medium transition">Contactar</a>
+        </div>
+      </div>
 
-                <!-- Botón Menú Móvil (opcional) -->
-                <div class="md:hidden">
-                <button class="text-gray-600 hover:text-gray-900 focus:outline-none">
-                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-                </div>
-            </div>
-        </nav>
-    </header>
+      <!-- Derecha: Botón Iniciar sesión + Menú móvil -->
+      <div class="flex items-center space-x-4">
+        <!-- Botón Iniciar sesión (desktop) -->
+        <div class="hidden md:flex">
+          <button id="login-button" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-semibold transition">
+            Iniciar sesión
+          </button>
+        </div>
 
-    <main>
-        <h1>Hola</h1>
-        <p>Que tal</p>
-        <p>Aqui con la vaina bacana</p>
-    </main>
+        <!-- Botón Menú Móvil -->
+        <div class="md:hidden">
+          <button id="menu-toggle" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header> 
 
-    <footer>
+<main class="relative w-full overflow-hidden">
+  <div id="carousel">
+    <!-- Imágenes del carrusel -->
+    <img src="src/landing/carrusel1.jpg" class="carousel-image opacity-100" alt="Imagen 1">
+    <img src="src/landing/carrusel2.jpg" class="carousel-image opacity-0" alt="Imagen 2">
+    <img src="src/landing/carrusel3.jpg" class="carousel-image opacity-0" alt="Imagen 3">
+    <img src="src/landing/carrusel4.jpg" class="carousel-image opacity-0" alt="Imagen 4">
+  </div>
+</main>
 
-    </footer>
+<script>
+  // Carrusel automático
+  let currentIndex = 0;
+  const images = document.querySelectorAll('.carousel-image');
+  const totalImages = images.length;
+
+  function changeImage() {
+    // Ocultar la imagen actual
+    images[currentIndex].classList.remove('opacity-100');
+    images[currentIndex].classList.add('opacity-0');
+
+    // Incrementar el índice de la imagen actual
+    currentIndex = (currentIndex + 1) % totalImages;
+
+    // Mostrar la siguiente imagen
+    images[currentIndex].classList.remove('opacity-0');
+    images[currentIndex].classList.add('opacity-100');
+  }
+
+  // Cambiar imagen cada 5 segundos
+  setInterval(changeImage, 5000);
+</script>
+
+<footer></footer>
 
 </body>
 </html>
