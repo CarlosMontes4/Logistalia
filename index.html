@@ -4,9 +4,54 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Logistalia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <h1>Hola</h1>
-    <p>Que tal</p>
+    <header class="bg-white shadow-md">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logotipo -->
+                <div class="flex-shrink-0">
+                <a href="#">
+                    <img class="h-10 w-auto" src="src/logo-nombre.png" alt="Logistalia">
+                </a>
+                </div>
+
+                <!-- Navegación -->
+                <div class="hidden md:flex space-x-6">
+                <a href="#saber-mas" class="text-gray-700 hover:text-blue-600 font-medium transition">Saber más</a>
+                <a href="#contacto" class="text-gray-700 hover:text-blue-600 font-medium transition">Contactar</a>
+                </div>
+
+                <!-- Botón Iniciar sesión -->
+                <div class="hidden md:flex">
+                <a href="#login" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-semibold transition">
+                    Iniciar sesión
+                </a>
+                </div>
+
+                <!-- Botón Menú Móvil (opcional) -->
+                <div class="md:hidden">
+                <button class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Hola</h1>
+        <p>Que tal</p>
+        <p>Aqui con la vaina bacana</p>
+    </main>
+
+    <footer>
+
+    </footer>
+
 </body>
 </html>
