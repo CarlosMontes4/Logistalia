@@ -1,0 +1,128 @@
+<div class="max-w-7xl mx-auto p-6 space-y-10">
+  <!-- Título principal -->
+  <div class="text-center">
+    <h1 class="text-4xl font-extrabold text-orange-600 mb-2">📋 Solicitudes de Clientes</h1>
+    <p class="text-gray-500">Gestiona las solicitudes de ingreso y retiro de mercancías</p>
+  </div>
+
+  <!-- Botón regresar -->
+  <div class="flex justify-end">
+    <button class="btn btn-outline btn-warning" (click)="goBack()">← Regresar</button>
+  </div>
+
+  <!-- Mensaje informativo -->
+  <div *ngIf="mensaje" class="alert alert-info shadow-lg">
+    <span class="font-medium">ℹ️ {{ mensaje }}</span>
+  </div>
+
+  <!-- Cargando -->
+  <div *ngIf="cargando" class="flex justify-center items-center min-h-[100px]">
+    <span class="loading loading-spinner text-warning"></span>
+  </div>
+
+  <!-- Lista de solicitudes pendientes -->
+  <div *ngIf="solicitudes.length > 0" class="space-y-6 " >
+    <h2 class="text-2xl font-bold text-center text-orange-300">⏳ Solicitudes Pendientes</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div *ngFor="let solicitud of solicitudes" class="card bg-base-100 shadow-xl border border-orange-200">
+        <div class="bg-gradient-to-r from-orange-400 to-orange-500 text-white p-4 rounded-t-lg">
+          <h2 class="text-lg font-semibold">#{{ solicitud.id }} - {{ solicitud.tipoMercancia }}</h2>
+        </div>
+        <div class="card-body">
+          <p><strong>👤 Cliente:</strong> {{ solicitud.usuarioId }}</p>
+          <p><strong>📦 Volumen:</strong> {{ solicitud.volumen }} m³</p>
+          <p><strong>📅 Ingreso:</strong> {{ solicitud.fechaIngreso }}</p>
+          <p><strong>📤 Retiro:</strong> {{ solicitud.fechaRetiro }}</p>
+
+          <div class="mt-2">
+            <span class="badge" [ngClass]="getEstadoColor(solicitud.estado)">
+              {{ solicitud.estado }}
+            </span>
+          </div>
+
+          <div *ngIf="solicitud.estado === 'PENDIENTE'" class="mt-4 flex flex-wrap gap-2">
+            <button class="btn btn-success btn-sm" (click)="actualizarEstado(solicitud.id, 'APROBADA')" [disabled]="!esSolicitudConEspacio(solicitud)">✔️ Aprobar</button>
+            <button class="btn btn-error btn-sm" (click)="actualizarEstado(solicitud.id, 'RECHAZADA')">❌ Rechazar</button>
+            <button class="btn btn-info btn-sm tooltip" (click)="verDisponibilidad(solicitud)" [disabled]="esSolicitudConEspacio(solicitud)" data-tip="Una vez asignado el espacio, la solicitud permitirá ser aprobada">🔍 Ver disponibilidad</button>
+          </div>
+          <!-- Lista de artículos -->
+        <!-- Botón del acordeón -->
+        <button (click)="toggleAccordion(solicitud.id)"
+          class="mt-4 w-full text-left font-semibold text-orange-500 hover:underline focus:outline-none">
+          {{ expandedSolicitudes.has(solicitud.id) ? '▼ Ocultar artículos' : '► Ver artículos' }}
+        </button>
+        <!-- Cuerpo del acordeón -->
+        <div *ngIf="expandedSolicitudes.has(solicitud.id)" class="mt-2">
+          <ul class="space-y-2 w-full">
+            <li *ngFor="let art of solicitud.articulos"
+              class="p-2 bg-gray-800 rounded-lg shadow flex justify-between items-center">
+              <span>
+                <span class="text-orange-400">{{ art.nombreArticulo }}</span> -
+                {{ art.descripcion }} -
+                {{ art.cantidad }}
+              </span>
+            </li>
+          </ul>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Solicitudes procesadas -->
+  <div *ngIf="solicitudesAprobadas.length > 0 || solicitudesRechazadas.length > 0">
+    <div *ngIf="solicitudesAprobadas.length > 0" class="space-y-4 mt-10">
+      <h2 class="text-2xl font-bold text-center text-green-600">✅ Solicitudes Aprobadas</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let solicitud of solicitudesAprobadas" class="card bg-green-50 shadow-md border border-green-200">
+          <div class="bg-green-500 text-white p-3 rounded-t-lg">
+            <h2 class="font-semibold">#{{ solicitud.id }} - {{ solicitud.tipoMercancia }}</h2>
+          </div>
+          <div class="card-body">
+            <p class="text-black"><strong>👤 Cliente:</strong> {{ solicitud.usuarioId }}</p>
+            <p class="text-black" ><strong>📦 Volumen:</strong> {{ solicitud.volumen }} m³</p>
+            <p class="text-black"><strong>📅 Ingreso:</strong> {{ solicitud.fechaIngreso }}</p>
+            <p class="text-black"><strong>📤 Retiro:</strong> {{ solicitud.fechaRetiro }}</p>
+            <div class="mt-2">
+              <span class="badge" [ngClass]="getEstadoColor(solicitud.estado)">
+                {{ solicitud.estado }}
+              </span>
+            </div>
+          </div>
+          <button class="btn btn-neutral btn-sm" (click)="actualizarEstado(solicitud.id, 'RECHAZADA')">❌ Rechazar</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="solicitudesRechazadas.length > 0" class="space-y-4 mt-10">
+      <h2 class="text-2xl font-bold text-center text-red-600">❌ Solicitudes Rechazadas</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let solicitud of solicitudesRechazadas" class="card bg-red-50 shadow-md border border-red-200">
+          <div class="bg-red-500 text-white p-3 rounded-t-lg">
+            <h2 class="font-semibold">#{{ solicitud.id }} - {{ solicitud.tipoMercancia }}</h2>
+          </div>
+          <div class="card-body">
+            <p class="text-black"><strong>👤 Cliente:</strong> {{ solicitud.usuarioId }}</p>
+            <p class="text-black"><strong>📦 Volumen:</strong> {{ solicitud.volumen }} m³</p>
+            <p class="text-black"><strong>📅 Ingreso:</strong> {{ solicitud.fechaIngreso }}</p>
+            <p class="text-black"><strong>📤 Retiro:</strong> {{ solicitud.fechaRetiro }}</p>
+            <div class="mt-2">
+              <span class="badge" [ngClass]="getEstadoColor(solicitud.estado)">
+                {{ solicitud.estado }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón para ver solicitudes procesadas si no hay ninguna cargada aún -->
+  <div class="flex justify-center mt-10" *ngIf="!cargando && solicitudesAprobadas.length === 0 && solicitudesRechazadas.length === 0">
+    <div class="bg-base-200 p-6 rounded-lg shadow-md text-center max-w-md">
+      <p class="mb-4 text-lg font-medium">¿Deseas ver las solicitudes ya procesadas?</p>
+      <button class="btn btn-primary" (click)="cargarSolicitudesProcesadas()">Ver solicitudes procesadas</button>
+    </div>
+  </div>
+</div>

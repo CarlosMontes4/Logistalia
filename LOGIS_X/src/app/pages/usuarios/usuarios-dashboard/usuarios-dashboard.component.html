@@ -1,0 +1,80 @@
+<div class="p-8 bg-gray-900 min-h-screen text-gray-100 max-w-7xl mx-auto">
+  <h1 class="text-3xl font-bold mb-10 text-orange-500 text-center">👥 Gestión de Usuarios</h1>
+
+  <!-- Sección de administradores -->
+  <section class="mb-12">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl text-green-400 font-semibold">Administradores</h2>
+      <button class="btn bg-green-600 hover:bg-green-700 text-white btn-sm" (click)="abrirModalNuevoAdmin()">
+        ➕ Nuevo Admin
+      </button>
+    </div>
+
+    <div *ngIf="admins.length === 0" class="text-gray-400">No hay administradores registrados.</div>
+
+    <div class="overflow-auto rounded-lg border border-gray-700">
+      <table class="min-w-full bg-gray-800">
+        <thead class="bg-gray-700 text-left">
+          <tr>
+            <th class="p-4">Nombre</th>
+            <th class="p-4">Correo</th>
+            <th class="p-4">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let admin of admins" class="border-b border-gray-700">
+            <td class="p-4">{{ admin.nombre }}</td>
+            <td class="p-4">{{ admin.correo }}</td>
+            <td class="p-4 space-x-2">
+              <button class="btn btn-sm btn-info" (click)="editarAdmin(admin)">Editar</button>
+              <button class="btn btn-sm btn-error" (click)="eliminarAdmin(admin)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Sección de clientes -->
+  <section>
+    <h2 class="text-2xl text-blue-400 font-semibold mb-4">Clientes</h2>
+
+    <div *ngIf="clientes.length === 0" class="text-gray-400">No hay clientes registrados.</div>
+
+    <div class="overflow-auto rounded-lg border border-gray-700">
+      <table class="min-w-full bg-gray-800">
+        <thead class="bg-gray-700 text-left">
+          <tr>
+            <th class="p-4">Nombre</th>
+            <th class="p-4">Correo</th>
+            <th class="p-4">Solicitudes</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cliente of clientes" class="border-b border-gray-700">
+            <td class="p-4">{{ cliente.nombre }}</td>
+            <td class="p-4">{{ cliente.correo }}</td>
+            <td class="p-4"> <a [routerLink]="['/solicitudes/list/cliente/', cliente.correo]" class="btn btn-accent" >ver</a> </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Modal para crear o editar admin -->
+  <dialog class="modal" [open]="modalAbierto">
+    <div class="modal-box bg-gray-800 text-white">
+      <h3 class="font-bold text-lg mb-4">{{ editando ? 'Editar Admin' : 'Nuevo Admin' }}</h3>
+
+      <input type="text" [(ngModel)]="form.nombre" placeholder="Nombre" class="input input-bordered w-full mb-3" />
+      <input type="email" [(ngModel)]="form.correo" placeholder="Correo" class="input input-bordered w-full mb-3" />
+      <input type="password" [(ngModel)]="form.contrasena" placeholder="Contraseña" class="input input-bordered w-full mb-3" />
+
+      <div class="modal-action flex justify-end space-x-2">
+        <button class="btn" (click)="cerrarModal()">Cancelar</button>
+        <button class="btn btn-success" (click)="guardarAdmin()">{{ editando ? 'Actualizar' : 'Crear' }}</button>
+      </div>
+    </div>
+  </dialog>
+</div>

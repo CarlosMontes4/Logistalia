@@ -1,0 +1,56 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-900 px-4">
+  <form [formGroup]="form" (ngSubmit)="submit()" class="card w-full max-w-md shadow-lg bg-gray-800 border border-orange-600 rounded-lg overflow-hidden">
+    <figure>
+      <img
+        src="https://img.freepik.com/foto-gratis/feliz-emocionada-sonriente-chica-pelirroja-elegida-sonriendo-gratitud-encantada-mucho-gusto-apuntandose-si-misma-mirar_1258-137358.jpg?uid=R15558570&ga=GA1.1.892211435.1745050144&semt=ais_hybrid&w=740"
+        alt="Registro"
+        class="w-full h-48 object-cover"
+      />
+    </figure>
+    <div class="card-body bg-gray-900 p-8 space-y-6 rounded-b">
+      <h2 class="text-center text-3xl font-extrabold text-orange-500">Crear cuenta</h2>
+
+      <div class="form-control">
+        <input
+          formControlName="nombre"
+          type="text"
+          placeholder="Nombre y apellidos"
+          class="input input-bordered w-full border-orange-500 bg-gray-800 text-white placeholder-orange-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500 transition" />
+        <div class="text-error text-xs mt-1 text-orange-400" *ngIf="f['nombre'].touched && f['nombre'].invalid">
+          Nombre es obligatorio y debe tener al menos 3 caracteres.
+        </div>
+      </div>
+
+      <div class="form-control">
+        <input
+          formControlName="correo"
+          type="email"
+          placeholder="Correo electrónico"
+          class="input input-bordered w-full border-orange-500 bg-gray-800 text-white placeholder-orange-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500 transition" />
+        <div class="text-error text-xs mt-1 text-orange-400" *ngIf="f['correo'].touched && f['correo'].invalid">
+          Ingrese un correo válido.
+        </div>
+      </div>
+
+      <div class="form-control">
+        <input
+          formControlName="contrasena"
+          type="password"
+          placeholder="Contraseña"
+          class="input input-bordered w-full border-orange-500 bg-gray-800 text-white placeholder-orange-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500 transition" />
+        <div class="text-error text-xs mt-1 text-orange-400" *ngIf="f['contrasena'].touched && f['contrasena'].invalid">
+          Contraseña requerida (mínimo 6 caracteres).
+        </div>
+      </div>
+
+      <div class="card-actions mt-6">
+        <button
+          type="submit"
+          class="btn bg-orange-600 hover:bg-orange-700 text-white font-semibold w-full transition-shadow shadow-md hover:shadow-lg"
+          [disabled]="form.invalid">
+          Registrar
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

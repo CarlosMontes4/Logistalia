@@ -1,0 +1,39 @@
+<div class="p-6">
+  <h2 class="text-2xl font-bold mb-4">Espacios del almacén {{ almacenId }}</h2>
+
+  <a [routerLink]="['/admin/espacios/nuevo', almacenId]" class="btn btn-primary mb-4">
+    ➕ Crear Espacio
+  </a>
+
+  <table class="table w-full bg-base-200">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Capacidad</th>
+        <th>Fecha ocupacion</th>
+        <th>Fecha desocupacion</th>
+        <th>Disponible</th>
+        <th>Solicitud ID</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let espacio of espacios">
+        <td>{{ espacio.id }}</td>
+        <td>{{ espacio.capacidad }}</td>
+        <td>{{ espacio.fechaOcupacion }}</td>
+        <td>{{ espacio.fechaDesocupacion }}</td>
+        <td>{{ espacio.disponible ? 'Sí' : 'No' }}</td>
+        <td>{{ espacio.solicitudId }}</td>
+        <td class="flex gap-2">
+          <a [routerLink]="['/admin/espacios/editar', almacenId, espacio.id]" class="btn btn-sm btn-warning">
+            Editar
+          </a> <button (click)="eliminar(espacio.id)" class="btn btn-sm btn-error">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="mt-4">
+    <button (click)="irAtras()" class="btn btn-secondary">Volver</button>
+  </div>

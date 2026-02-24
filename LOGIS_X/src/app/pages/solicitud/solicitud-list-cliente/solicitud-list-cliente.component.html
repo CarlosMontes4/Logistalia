@@ -1,0 +1,95 @@
+<div class="max-w-6xl mx-auto p-6">
+  <h1 *ngIf="!isAdmin" class="text-3xl font-bold mb-6 text-center text-primary">📨 Mis Solicitudes</h1>
+  <h1 *ngIf="isAdmin" class="text-2xl font-bold mb-6 text-center text-primary">📨 Solicitudes del cliente <span
+      class="text-secondary">{{correoCliente}}</span></h1>
+
+  <!-- Estado de carga -->
+  <div *ngIf="cargando" class="text-center mb-4">
+    <span class="loading loading-spinner text-info"></span>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="error" class="alert alert-error shadow-lg mb-4">{{ error }}</div>
+
+  <!-- Sin solicitudes -->
+  <div *ngIf="!cargando && solicitudes.length === 0" class="text-center text-gray-500 italic">
+    No tienes solicitudes registradas por el momento.
+  </div>
+
+  <!-- Información útil -->
+  <div *ngIf="!isAdmin" class="card bg-info text-info-content shadow-lg mt-8 mb-8 max-w-xl mx-auto">
+    <div class="card-body">
+      <h3 class="card-title text-lg">ℹ️ Revisión de Solicitudes Pendientes</h3>
+      <p>
+        Las solicitudes que se encuentren en estado <span class="badge badge-warning">Pendiente</span>
+        serán revisadas en un plazo máximo de <strong>72 horas</strong> desde su registro.
+      </p>
+    </div>
+  </div>
+
+  <!-- Lista de solicitudes -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let solicitud of solicitudes" class="card bg-base-100 shadow-md border overflow-hidden">
+
+      <!-- Encabezado con fondo degradado -->
+      <div
+        class="h-32 w-full bg-gradient-to-r from-orange-400 via-orange-300 to-orange-200 flex items-center justify-center text-white">
+        <h2 class="text-xl font-bold">#{{ solicitud.id }} - {{ solicitud.tipoMercancia }}</h2>
+      </div>
+
+      <!-- Contenido de la tarjeta -->
+      <div class="card-body">
+        <p><strong>📦 Volumen:</strong> {{ solicitud.volumen }} m³</p>
+        <p><strong>📅 Ingreso:</strong> {{ solicitud.fechaIngreso }}</p>
+        <p><strong>📤 Retiro:</strong> {{ solicitud.fechaRetiro }}</p>
+        <div class="mt-2 flex items-center justify-between">
+          <span class="badge" [ngClass]="getEstadoColor(solicitud.estado)">
+            {{ solicitud.estado }}
+          </span>
+          <button *ngIf="solicitud.estado === 'APROBADA'" (click)="toggleAlmacen(solicitud.id)"
+            class="text-sm text-orange-500 font-medium hover:underline focus:outline-none ml-2">
+            {{ expandedAlmacenes.has(solicitud.id) ? '▼ Ocultar almacén' : '► Mostrar almacén' }}
+          </button>
+        </div>
+        <!-- Info del almacén (acordeón) -->
+        <div *ngIf="expandedAlmacenes.has(solicitud.id)" class="mt-2 bg-gray-100 p-4 rounded text-sm text-gray-800">
+          <p><strong>🏭 Almacén:</strong> {{solicitud.almacen.nombre }}</p>
+          <p><strong>📍 Ubicación:</strong> {{solicitud.almacen.ubicacion }}</p>
+          <p><strong>📝 Descripción:</strong> {{solicitud.almacen.descripcion }}</p>
+        </div>
+        <!-- Lista de artículos -->
+        <!-- Botón del acordeón -->
+        <button (click)="toggleAccordion(solicitud.id)"
+          class="mt-4 w-full text-left font-semibold text-orange-500 hover:underline focus:outline-none">
+          {{ expandedSolicitudes.has(solicitud.id) ? '▼ Ocultar artículos' : '► Ver artículos' }}
+        </button>
+        <!-- Cuerpo del acordeón -->
+        <div *ngIf="expandedSolicitudes.has(solicitud.id)" class="mt-2">
+          <ul class="space-y-2 w-full">
+            <li *ngFor="let art of solicitud.articulos"
+              class="p-2 bg-gray-800 rounded-lg shadow flex justify-between items-center">
+              <span>
+                <span class="text-orange-400">{{ art.nombreArticulo }}</span> -
+                {{ art.descripcion }} -
+                {{ art.cantidad }}
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Botón de regreso -->
+  <div class="mt-10 text-center">
+    <button class="btn btn-accent" (click)="goBack()">⬅️ Volver</button>
+  </div>
+
+  <!-- Imagen inferior decorativa -->
+  <div class="w-full mt-8">
+    <img
+      src="https://img.freepik.com/foto-gratis/almacen-moderno-banado-resplandor-sol-poniente_91128-4255.jpg?uid=R15558570&ga=GA1.1.892211435.1745050144&semt=ais_hybrid&w=740"
+      alt="Solicitudes Banner" class="w-full h-auto object-cover rounded-lg shadow-xl" />
+  </div>
+</div>

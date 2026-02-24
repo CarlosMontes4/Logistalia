@@ -1,0 +1,143 @@
+<div class="max-w-2xl mx-auto p-8 bg-gray-900 rounded-3xl shadow-2xl text-white">
+  <h2 class="text-4xl font-bold mb-8 text-center text-green-400">📦 Solicitud de Espacio</h2>
+
+  <form [formGroup]="solicitudForm" (ngSubmit)="enviarSolicitud()" class="space-y-6">
+    <!-- Correo -->
+    <div>
+      <input class="input input-bordered w-full" placeholder="Correo del Cliente" formControlName="correoCliente"
+        type="email" required />
+      <div *ngIf="correoCliente?.invalid && (correoCliente?.dirty || correoCliente?.touched)"
+        class="text-red-400 text-sm mt-1">
+        <div *ngIf="correoCliente?.errors?.['required']">El correo es obligatorio.</div>
+        <div *ngIf="correoCliente?.errors?.['email']">Formato de correo inválido.</div>
+      </div>
+    </div>
+
+    <!-- Tipo de mercancía -->
+    <div>
+      <select class="select select-bordered w-full" formControlName="tipoMercancia" required>
+        <option value="" disabled selected>Selecciona el tipo de mercancía</option>
+        <option value="Electrónica">Electrónica</option>
+        <option value="Alimentos">Alimentos</option>
+        <option value="Textiles">Textiles</option>
+        <option value="Muebles">Muebles</option>
+        <option value="Otros">Otros</option>
+      </select>
+      <div *ngIf="tipoMercancia?.invalid && (tipoMercancia?.dirty || tipoMercancia?.touched)"
+        class="text-red-400 text-sm mt-1">
+        Selecciona un tipo de mercancía.
+      </div>
+    </div>
+
+    <!-- Volumen -->
+    <div>
+      <input class="input input-bordered w-full" placeholder="Volumen (m³)" type="number" formControlName="volumen"
+        required min="0.1" step="0.1" />
+      <div *ngIf="volumen?.invalid && (volumen?.dirty || volumen?.touched)" class="text-red-400 text-sm mt-1">
+        <div *ngIf="volumen?.errors?.['required']">El volumen es obligatorio.</div>
+        <div *ngIf="volumen?.errors?.['min']">El volumen debe ser mayor que cero.</div>
+      </div>
+    </div>
+
+    <!-- Fecha de ingreso -->
+    <div>
+      <input class="input input-bordered w-full" type="date" formControlName="fechaIngreso" required />
+      <div *ngIf="fechaIngreso?.invalid && (fechaIngreso?.dirty || fechaIngreso?.touched)"
+        class="text-red-400 text-sm mt-1">
+        La fecha de ingreso es obligatoria.
+      </div>
+    </div>
+
+    <!-- Fecha de retiro -->
+    <div>
+      <input class="input input-bordered w-full" type="date" formControlName="fechaRetiro" required />
+      <div *ngIf="fechaRetiro?.invalid && (fechaRetiro?.dirty || fechaRetiro?.touched)"
+        class="text-red-400 text-sm mt-1">
+        La fecha de retiro es obligatoria.
+      </div>
+    </div>
+
+    <div *ngIf="solicitudForm.errors?.['fechasInvalidas'] && (fechaRetiro?.touched || fechaIngreso?.touched)"
+      class="text-red-400 text-sm mt-1">
+      La fecha de retiro debe ser posterior a la fecha de ingreso.
+    </div>
+
+    <!-- Botón -->
+    <button type="submit" class="btn btn-success w-full uppercase tracking-wide"
+      [disabled]="!solicitudForm.valid || !solicitudForm.touched">
+      Enviar Solicitud
+    </button>
+  </form>
+
+  <div class="mt-8 flex flex-col items-center">
+    <!-- Botón para abrir modal -->
+    <button class="btn btn-secondary w-xs mt-6" (click)="abrirModal = true">➕ Añadir Artículo</button>
+
+    <!-- Lista de artículos -->
+    <ul class="mt-4 space-y-2 w-full">
+      <li *ngFor="let art of articulos" class="p-2 bg-gray-800 rounded-lg shadow flex justify-between items-center">
+        <span><span class="text-orange-400">{{ art.nombreArticulo }}</span> - {{ art.descripcion }} - {{ art.cantidad
+          }}</span>
+        <button class="btn btn-xs btn-error" (click)="eliminarArticulo(art)">🗑</button>
+      </li>
+    </ul>
+
+    <!-- Modal -->
+    <dialog class="modal" [open]="abrirModal">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">Añadir nuevo artículo</h3>
+        <input class="input input-bordered w-full my-2" placeholder="Nombre"
+          [(ngModel)]="nuevoArticulo.nombreArticulo" />
+        <input class="input input-bordered w-full my-2" placeholder="Descripción"
+          [(ngModel)]="nuevoArticulo.descripcion" />
+        <input class="input input-bordered w-full my-2" type="number" placeholder="Cantidad"
+          [(ngModel)]="nuevoArticulo.cantidad" />
+        <div class="modal-action">
+          <button class="btn" (click)="abrirModal = false">Cancelar</button>
+          <button class="btn btn-success" (click)="guardarArticulo()">Guardar</button>
+        </div>
+      </div>
+    </dialog>
+  </div>
+
+  <!-- Mensaje de confirmación -->
+  <p *ngIf="mensaje" class="mt-4 text-center font-semibold text-green-300">{{ mensaje }}</p>
+
+  <!-- Estimación de coste -->
+  <div *ngIf="volumen?.value > 0" class="mt-4 p-4 bg-gray-800 rounded-xl shadow-lg text-center">
+    <h3 class="text-lg font-semibold text-green-400">💶 Estimación de Coste</h3>
+    <p class="text-xl mt-2 text-white">
+      {{ costeEstimado | number:'1.2-2' }} €
+    </p>
+  </div>
+
+  <!-- Sección de Soporte Técnico -->
+  <div class="card mt-10 bg-base-200 shadow-lg text-gray-800">
+    <div class="card-body flex flex-row items-center">
+      <div class="flex-shrink-0">
+        <img src="https://img.icons8.com/color/96/000000/phone.png" alt="Soporte Técnico"
+          class="w-20 h-20 rounded-full" />
+      </div>
+      <div class="ml-6 flex-1">
+        <h4 class="card-title text-lg text-primary">¿Dudas o consultas?</h4>
+        <p class="text-base text-white mt-1">Puedes contactar a nuestro servicio técnico:</p>
+        <span class="font-bold text-lg text-success mt-2">900 123 456</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agradecimiento -->
+  <div class="card mt-8 bg-orange-300 bg-opacity-20 shadow-lg text-gray-200">
+    <div class="card-body flex flex-row items-center">
+      <div class="flex-shrink-0">
+        <img
+          src="https://img.freepik.com/foto-gratis/vista-frontal-mujer-sosteniendo-portatil-listo-atender-llamadas-auriculares_23-2148434731.jpg"
+          alt="Cliente feliz" class="w-20 h-20 rounded-full" />
+      </div>
+      <div class="ml-6 flex-1">
+        <h4 class="card-title text-lg text-orange-300">¡Gracias por confiar en nosotros!</h4>
+        <p class="text-base mt-1">Tu solicitud está en buenas manos. Estamos para ayudarte siempre.</p>
+      </div>
+    </div>
+  </div>
+</div>

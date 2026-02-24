@@ -1,0 +1,66 @@
+CREATE DATABASE IF NOT EXISTS logistalia_db;
+USE logistalia_db;
+
+-- Tabla de usuarios
+CREATE TABLE usuario (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    correo VARCHAR(100) NOT NULL UNIQUE,
+    contrasena VARCHAR(255) NOT NULL,
+    rol ENUM('CLIENTE', 'ADMIN') NOT NULL
+);
+
+-- Tabla de almacenes
+CREATE TABLE almacen (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    ubicacion VARCHAR(255) NOT NULL,
+    capacidad_total INT NOT NULL,
+    descripcion TEXT
+);
+
+-- Tabla de solicitudes
+CREATE TABLE solicitud (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id BIGINT,
+    tipo_mercancia VARCHAR(100) NOT NULL,
+    volumen INT NOT NULL,
+    fecha_ingreso DATE NOT NULL,
+    fecha_retiro DATE NOT NULL,
+    estado ENUM('PENDIENTE', 'APROBADA', 'RECHAZADA') NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id)
+        ON DELETE CASCADE
+);   
+
+-- Tabla de espacios
+CREATE TABLE espacio (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    capacidad INT NOT NULL,
+    disponible BOOLEAN NOT NULL DEFAULT TRUE,
+    fecha_ocupacion DATE NOT NULL,
+    fecha_desocupacion DATE NOT NULL,
+    almacen_id BIGINT,
+    solicitud_id BIGINT,
+    FOREIGN KEY (almacen_id) REFERENCES almacen(id)
+        ON DELETE CASCADE,
+	FOREIGN KEY (solicitud_id) REFERENCES solicitud(id)
+        ON DELETE CASCADE
+);
+
+-- Tabla de articulos por solicitud
+CREATE TABLE articulo (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre_articulo VARCHAR(255) NOT NULL,
+    cantidad BIGINT,
+    descripcion VARCHAR(255) NOT NULL,
+    solicitud_id BIGINT,
+    FOREIGN KEY (solicitud_id) REFERENCES solicitud(id)
+        ON DELETE CASCADE
+);
+
+-- Almacenes de prueba
+INSERT INTO almacen (nombre, ubicacion, capacidad_total, descripcion) VALUES
+('Almacén Central Madrid', 'Calle Ficticia 123, Madrid, España', 5000, 'Almacén principal con capacidad para todo tipo de mercancías, bien comunicado con autopistas.'),
+('Depósito Norte', 'Avenida Imaginaria 456, Madrid, España', 3200, 'Almacén regional enfocado en electrónica y productos perecederos.'),
+('Centro Logístico', 'Polígono Industrial El Real, Madrid, España', 4000, 'Centro logístico estratégico para la costa este.'),
+('Almacén Sur', 'Carretera Nacional 4, Madrid, España', 2800, 'Almacén con climatización ideal para alimentos y textiles.');

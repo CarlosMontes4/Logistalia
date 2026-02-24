@@ -1,0 +1,56 @@
+<div class="p-8 min-h-screen bg-gray-900 text-gray-100 flex flex-col items-center">
+  <h1 class="text-4xl font-extrabold mb-12 text-orange-500 text-center">Panel de Administración</h1>
+
+
+  <div class="flex flex-wrap justify-center gap-10">
+    <a routerLink="/almacenes"
+      class="card bg-gray-800 w-96 shadow-sm hover:shadow-lg transition rounded-lg overflow-hidden transform hover:scale-101 transition-transform duration-100">
+      <figure>
+        <img src="assets/almacen_2.jpg" alt="Gestión de Almacenes" class="h-48 w-full object-cover" />
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title text-orange-400">📦 Gestión de Almacenes</h2>
+        <p class="text-gray-300">Crear, editar y eliminar almacenes.</p>
+        <div class="card-actions justify-end">
+          <button class="btn btn-sm w-full bg-orange-500 hover:bg-orange-600 border-0 text-white">Entrar</button>
+        </div>
+      </div>
+    </a>
+
+    <a routerLink="/admin/solicitudes"
+      class="card bg-gray-800 w-96 shadow-sm hover:shadow-lg transition rounded-lg overflow-hidden transform hover:scale-101 transition-transform duration-100">
+      <figure>
+        <img src="assets/solicitudes_1.jpg" alt="Solicitudes" class="h-48 w-full object-cover" />
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title text-orange-400">📨 Solicitudes</h2>
+        <p class="text-gray-300">Revisar y aprobar solicitudes de clientes.</p>
+        <div class="card-actions justify-end">
+          <button class="btn w-full btn-sm bg-orange-500 hover:bg-orange-600 border-0 text-white">Entrar</button>
+        </div>
+      </div>
+    </a>
+     <!-- ✅ Nueva Tarjeta: Gestión de Usuarios -->
+    <a routerLink="/admin/gesion-usuarios"
+      class="card bg-gray-800 w-96 shadow-sm hover:shadow-lg transition rounded-lg overflow-hidden transform hover:scale-101 transition-transform duration-100">
+      <figure>
+        <img src="assets/usuarios_1.jpg" alt="Gestión de Usuarios" class="h-48 w-full object-cover" />
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title text-orange-400">👤 Gestión de Usuarios</h2>
+        <p class="text-gray-300">Administrar usuarios, roles y permisos del sistema.</p>
+        <div class="card-actions justify-end">
+          <button class="btn w-full btn-sm bg-orange-500 hover:bg-orange-600 border-0 text-white">Entrar</button>
+        </div>
+      </div>
+    </a>
+  </div>
+
+
+  <div class="mt-10 w-full max-w-2xl border-l-4 border-orange-500 bg-gray-800 p-6 rounded shadow text-gray-200">
+    <p>
+      Panel de administración. Desde aquí puedes gestionar almacenes, espacios y solicitudes de clientes. Utiliza las opciones superiores para navegar entre las diferentes secciones.
+    </p>
+  </div>
+
+</div>

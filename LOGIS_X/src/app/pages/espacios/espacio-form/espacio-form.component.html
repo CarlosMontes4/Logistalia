@@ -1,0 +1,62 @@
+<div class="p-6 max-w-xl mx-auto">
+  <!-- Mensaje de solicitud en curso -->
+  <div *ngIf="solicitudEnCurso"
+    class="mb-4 p-4 bg-blue-100 border border-blue-300 rounded text-blue-800 flex items-center justify-between">
+    <span>
+      Estas realizando una solicitud. Comprueba si puede habilitar el espacio deseado.
+    </span>
+    <button (click)="mostrarDetallesSolicitud = !mostrarDetallesSolicitud" class="ml-4 focus:outline-none"
+      aria-label="Mostrar detalles de la solicitud">
+      <svg [ngClass]="{'transform rotate-180': mostrarDetallesSolicitud}"
+        class="w-6 h-6 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2"
+        viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
+  </div>
+  <!-- Detalles de la solicitud -->
+  <div *ngIf="mostrarDetallesSolicitud" class="mb-4 p-4 border border-blue-200 rounded shadow">
+    <h3 class="font-semibold mb-2">Detalles de la Solicitud</h3>
+    <div *ngIf="solicitudEnCurso; else sinDatos">
+      <p><strong>IdSolicitud:</strong> {{ solicitudEnCurso.id }}</p>
+      <p><strong>Volumen:</strong> {{ solicitudEnCurso.volumen }} m³</p>
+      <p><strong>Ingreso:</strong> {{ solicitudEnCurso.fechaIngreso }}</p>
+      <p><strong>Retiro:</strong> {{ solicitudEnCurso.fechaRetiro }}</p>
+    </div>
+    <ng-template #sinDatos>
+      <div>No hay datos de la solicitud.</div>
+    </ng-template>
+  </div>
+
+  <h2 class="text-2xl font-bold mb-4">{{ espacioId ? 'Editar' : 'Crear' }} Espacio</h2>
+
+  <form class="space-y-4" (ngSubmit)="guardar()">
+    <div>
+      <label class="label">Capacidad</label>
+      <input type="number" [(ngModel)]="form.capacidad" name="capacidad" class="input input-bordered w-full" required />
+    </div>
+
+    <div>
+      <label class="label">Disponible</label>
+      <input type="checkbox" [(ngModel)]="form.disponible" name="disponible" class="toggle toggle-success" />
+    </div>
+
+    <div>
+      <label class="label">Fecha de Ocupación</label>
+      <input type="date" [(ngModel)]="form.fechaOcupacion" name="fechaOcupacion" class="input input-bordered w-full" required />
+    </div>
+    <div>
+      <label class="label">Fecha de Desocupación</label>
+      <input type="date" [(ngModel)]="form.fechaDesocupacion" name="fechaDesocupacion" class="input input-bordered w-full" required />
+    </div>
+
+    <div>
+      <label class="label">Solicitud ID</label>
+      <input type="number" [(ngModel)]="form.solicitudId" name="usuarioId" class="input input-bordered w-full" required />
+    </div>
+
+    <button class="btn btn-primary" type="submit">Guardar</button>
+    <a routerLink="/admin/almacenes" class="btn btn-ghost ml-2">Cancelar</a>
+  </form>
+</div>
+

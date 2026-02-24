@@ -1,0 +1,66 @@
+<div class="p-8 bg-gray-900 min-h-screen text-gray-100 max-w-7xl mx-auto">
+  <h2 class="text-3xl font-bold mb-8 text-orange-500 text-center">Gestión de Almacenes</h2>
+
+  <!-- Mensaje de solicitud en curso -->
+  <div *ngIf="solicitudEnCurso"
+       class="mb-6 p-5 bg-blue-900 bg-opacity-30 border border-blue-700 rounded-lg text-blue-300 flex items-center justify-between">
+    <span class="text-sm md:text-base">
+      Estás realizando una solicitud. Selecciona el almacén y comprueba si puede habilitar el espacio deseado.
+    </span>
+    <button (click)="mostrarDetallesSolicitud = !mostrarDetallesSolicitud"
+            class="ml-4 p-2 rounded hover:bg-blue-700 focus:outline-none"
+            aria-label="Mostrar detalles de la solicitud">
+      <svg [ngClass]="{'transform rotate-180': mostrarDetallesSolicitud}"
+           class="w-6 h-6 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2"
+           viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Detalles de la solicitud -->
+  <div *ngIf="mostrarDetallesSolicitud" class="mb-6 p-4 border border-blue-700 rounded-lg shadow bg-gray-800 text-blue-300">
+    <h3 class="font-semibold mb-3 text-lg">Detalles de la Solicitud</h3>
+    <div *ngIf="solicitudEnCurso; else sinDatos">
+      <p><strong>Volumen:</strong> {{ solicitudEnCurso.volumen }} m³</p>
+      <p><strong>Ingreso:</strong> {{ solicitudEnCurso.fechaIngreso }}</p>
+      <p><strong>Retiro:</strong> {{ solicitudEnCurso.fechaRetiro }}</p>
+    </div>
+    <ng-template #sinDatos>
+      <div>No hay datos de la solicitud.</div>
+    </ng-template>
+  </div>
+
+  <div class="flex justify-between items-center mb-8">
+    <button routerLink="/almacenes/crear" class="btn bg-orange-600 hover:bg-orange-700 border-0 text-white shadow-md transition">
+      Crear nuevo almacén
+    </button>
+  </div>
+
+  <div *ngIf="cargando" class="text-center text-gray-400 mb-6">Cargando almacenes...</div>
+  <div *ngIf="error" class="text-center text-red-500 mb-6">{{ error }}</div>
+
+  <!-- Listado de almacenes como cards -->
+  <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <div *ngFor="let almacen of almacenes" class="card bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+
+      <div class="card-body text-gray-100">
+        <h3 class="card-title text-orange-400">{{ almacen.nombre }}</h3>
+        <p class="mb-2"><strong>Ubicación:</strong> {{ almacen.ubicacion }}</p>
+        <p class="mb-2"><strong>Capacidad Total:</strong> {{ almacen.capacidadTotal }} m³</p>
+        <p class="mb-4">{{ almacen.descripcion }}</p>
+        <div class="card-actions justify-end space-x-2">
+          <button [routerLink]="['/almacenes/editar', almacen.id]" class="btn btn-sm btn-info">Editar</button>
+          <button (click)="eliminar(almacen.id!)" class="btn btn-sm btn-error">Eliminar</button>
+          <button [routerLink]="['/admin/espacios/almacen', almacen.id]" class="btn btn-sm btn-accent">Espacios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex justify-center mt-10">
+    <button (click)="goBack()" class="btn btn-secondary bg-gray-700 hover:bg-gray-600 border-0 text-gray-300 shadow">
+      Volver atrás
+    </button>
+  </div>
+</div>

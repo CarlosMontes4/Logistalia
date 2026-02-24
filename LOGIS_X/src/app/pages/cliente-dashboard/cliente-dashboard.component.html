@@ -1,0 +1,60 @@
+<div class="p-8 bg-gray-900 min-h-screen text-gray-100">
+  <h1 class="text-4xl font-extrabold mb-10 text-orange-500 text-center">Bienvenido al Panel del Cliente</h1>
+
+  <div class="grid gap-8 md:grid-cols-2 max-w-5xl mx-auto">
+    <!-- Nueva Solicitud -->
+    <a
+      routerLink="/solicitudes/nueva"
+      class="card bg-gray-800 shadow-lg rounded-lg overflow-hidden hover:bg-gray-700 transition cursor-pointer"
+    >
+      <figure>
+        <img
+          src="https://img.freepik.com/foto-gratis/mujer-equipo-seguridad-trabajo_23-2148976336.jpg?uid=R15558570&ga=GA1.1.892211435.1745050144&semt=ais_hybrid&w=740"
+          alt="Nueva Solicitud"
+          class="w-full h-48 object-cover"
+        />
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title text-orange-400">➕ Nueva Solicitud</h2>
+        <p>Realiza una solicitud para almacenar mercancía.</p>
+      </div>
+    </a>
+
+    <!-- Mis Solicitudes -->
+    <a
+      [routerLink]="['/solicitudes/list/cliente/', usuario.correo]"
+      class="card bg-gray-800 shadow-lg rounded-lg overflow-hidden hover:bg-gray-700 transition cursor-pointer"
+    >
+      <figure>
+        <img
+          src="https://img.freepik.com/foto-gratis/hombre-joven-expresivo-posando-estudio_176474-38405.jpg?uid=R15558570&ga=GA1.1.892211435.1745050144&semt=ais_hybrid&w=740"
+          alt="Mis Solicitudes"
+          class="w-full h-48 object-cover"
+        />
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title text-orange-400">📨 Mis Solicitudes</h2>
+        <p>Revisa el estado de tus solicitudes.</p>
+      </div>
+    </a>
+
+
+    <!-- Cerrar Sesión -->
+    <button
+      (click)="logout()"
+      class="card bg-orange-500 hover:bg-orange-600 shadow-lg rounded-lg p-0 overflow-hidden transition text-left cursor-pointer"
+    >
+      <figure>
+        <img
+          src="https://img.freepik.com/foto-gratis/vista-superior-flecha-espacio-copia_23-2148490525.jpg?uid=R15558570&ga=GA1.1.892211435.1745050144&semt=ais_hybrid&w=740"
+          alt="Cerrar Sesión"
+          class="w-full h-48 object-cover opacity-90"
+        />
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title text-white">🚪 Cerrar Sesión</h2>
+        <p class="text-white">Salir de tu cuenta de cliente.</p>
+      </div>
+    </button>
+  </div>
+</div>

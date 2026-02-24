@@ -1,0 +1,71 @@
+<div class="p-8 max-w-lg mx-auto bg-gray-900 rounded-lg shadow-lg text-gray-100">
+  <h2 class="text-3xl font-bold mb-8 text-orange-500 text-center">
+    {{ modoEdicion ? 'Editar' : 'Crear' }} Almacén
+  </h2>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()" class="space-y-6">
+    <div>
+      <label class="block mb-2 font-semibold">Nombre</label>
+      <input
+        type="text"
+        formControlName="nombre"
+        class="input input-bordered w-full bg-gray-800 border-orange-400 focus:ring-orange-400 focus:border-orange-400 text-gray-100"
+      />
+      <div *ngIf="form.get('nombre')?.invalid && form.get('nombre')?.touched" class="text-red-500 text-sm mt-1">
+        Nombre es obligatorio
+      </div>
+    </div>
+
+    <div>
+      <label class="block mb-2 font-semibold">Ubicación</label>
+      <input
+        type="text"
+        formControlName="ubicacion"
+        class="input input-bordered w-full bg-gray-800 border-orange-400 focus:ring-orange-400 focus:border-orange-400 text-gray-100"
+      />
+      <div *ngIf="form.get('ubicacion')?.invalid && form.get('ubicacion')?.touched" class="text-red-500 text-sm mt-1">
+        Ubicación es obligatoria
+      </div>
+    </div>
+
+    <div>
+      <label class="block mb-2 font-semibold">Capacidad Total - metros cúbicos</label>
+      <input
+        type="number"
+        formControlName="capacidadTotal"
+        class="input input-bordered w-full bg-gray-800 border-orange-400 focus:ring-orange-400 focus:border-orange-400 text-gray-100"
+      />
+      <div *ngIf="form.get('capacidadTotal')?.invalid && form.get('capacidadTotal')?.touched" class="text-red-500 text-sm mt-1">
+        Capacidad debe ser mayor a 0
+      </div>
+    </div>
+
+    <div>
+      <label class="block mb-2 font-semibold">Descripción</label>
+      <textarea
+        formControlName="descripcion"
+        class="textarea textarea-bordered w-full bg-gray-800 border-orange-400 focus:ring-orange-400 focus:border-orange-400 text-gray-100"
+        rows="4"
+      ></textarea>
+    </div>
+
+    <div *ngIf="error" class="text-red-500 mb-4 text-center font-semibold">{{ error }}</div>
+
+    <div class="flex justify-center space-x-4">
+      <button
+        type="submit"
+        [disabled]="form.invalid"
+        class="btn bg-orange-600 hover:bg-orange-700 border-0 text-white shadow-md transition flex-1"
+      >
+        {{ modoEdicion ? 'Actualizar' : 'Crear' }}
+      </button>
+      <button
+        type="button"
+        (click)="regresarAlmacenes()"
+        class="btn bg-gray-700 hover:bg-gray-600 border-0 text-gray-300 shadow-md transition flex-1"
+      >
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>
