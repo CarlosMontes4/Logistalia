@@ -32,7 +32,7 @@ Instala Angular CLI globalmente (si no está) con el siguiente comando -> npm in
 
 ✅ PASO 2: Clona o copia el proyecto
 Si el proyecto está en un repositorio:
-git clone https://github.com/alemadorran/LOGIS_X.git    ->>>>>>>>>>>>>>>>>>>>< CAMBIAR si lo vas a adjuntar al proyecto
+git clone https://github.com/alemadorran/LOGIS_X.git
 
 ✅ PASO 3: Instala las dependencias
 En la terminal dentro de VS Code:
